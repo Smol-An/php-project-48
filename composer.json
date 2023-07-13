@@ -1,0 +1,25 @@
+{
+    "name": "hexlet/code",
+    "description": "hexlet-code",
+    "license": "MIT",
+    "bin": [
+        "bin/gendiff"
+    ],
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        },
+    "files": [
+            "src/docopt.php"
+    ]
+    },
+    "authors": [
+        {
+            "name": "Anastasia Smolyakova",
+            "email": "smolyakova_av@mail.ru"
+        }
+    ],
+    "require": {
+        "docopt/docopt": "^1.0"
+    }
+}
