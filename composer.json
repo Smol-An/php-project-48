@@ -9,9 +9,10 @@
         "psr-4": {
             "Hexlet\\Code\\": "src/"
         },
-    "files": [
-            "src/docopt.php"
-    ]
+        "files": [
+            "src/docopt.php",
+            "src/differ.php"
+        ]
     },
     "authors": [
         {
