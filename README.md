@@ -5,6 +5,10 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/c7dd888ce1e8e1a12c9e/maintainability)](https://codeclimate.com/github/Smol-An/php-project-48/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/c7dd888ce1e8e1a12c9e/test_coverage)](https://codeclimate.com/github/Smol-An/php-project-48/test_coverage)
 
-### Asciinema:
+### File comparison:
 
+#### json <> json 
 [![asciicast](https://asciinema.org/a/LrXgCdAtDeyu81N4p1WFPsaw9.svg)](https://asciinema.rg/a/LrXgCdAtDeyu81N4p1WFPsaw9)
+
+#### yml <> yml
+[![asciicast](https://asciinema.org/a/mZ3gtlnA6TI7hTDzq6VeDGFaM.svg)](https://asciinema.org/a/mZ3gtlnA6TI7hTDzq6VeDGFaM)

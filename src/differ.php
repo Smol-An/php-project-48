@@ -2,6 +2,8 @@
 
 namespace Differ\Differ;
 
+use function Differ\Parsers\parse;
+
 function getValueAsString($value)
 {
     if (is_bool($value)) {
@@ -13,15 +15,7 @@ function getValueAsString($value)
 
 function genDiff($pathToFile1, $pathToFile2)
 {
-    $json1 = $pathToFile1[0] === '/'
-                ? file_get_contents($pathToFile1)
-                : file_get_contents(__DIR__ . '/' . $pathToFile1);
-    $json2 = $pathToFile1[0] === '/'
-                ? file_get_contents($pathToFile2)
-                : file_get_contents(__DIR__ . '/' . $pathToFile2);
-
-    $data1 = json_decode($json1, true);
-    $data2 = json_decode($json2, true);
+    [$data1, $data2] = parse($pathToFile1, $pathToFile2);
 
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     sort($keys);
