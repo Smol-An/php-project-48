@@ -20,9 +20,9 @@
             "Hexlet\\Code\\Tests\\": "tests/"
         },
         "files": [
-            "src/docopt.php",
-            "src/differ.php",
-            "src/parsers.php",
+            "src/Docopt.php",
+            "src/Differ.php",
+            "src/Parsers.php",
             "tests/DifferTest.php"
         ]
     },
