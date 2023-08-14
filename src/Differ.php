@@ -40,14 +40,30 @@ function getFormattedDiff($diff, $depth = 0)
 
     foreach ($diff as $key => $value) {
         if (is_array($value)) {
-            $output .= $indent . $key . ": {\n";
+            $output .= $indent . formatKey($key) . ": {\n";
             $output .= getFormattedDiff($value, $depth + 1);
             $output .= $closeIndent . "}\n";
+        } elseif ($value === '') {
+            $output .= $indent . formatKey($key) . ":" . "\n";
         } else {
-            $output .= $indent . $key . ": " . formatValue($value) . "\n";
+            $output .= $indent . formatKey($key) . ": " . formatValue($value) . "\n";
         }
     }
+
     return $output;
+}
+
+function formatKey($key)
+{
+    if (substr($key, 0, 4) === '  + ') {
+        return $key;
+    } elseif (substr($key, 0, 4) === '  - ') {
+        return $key;
+    } elseif (substr($key, 0, 4) === '    ') {
+        return $key;
+    }
+
+    return '    ' . $key;
 }
 
 function formatValue($value)
@@ -55,6 +71,7 @@ function formatValue($value)
     if ($value === null) {
         return 'null';
     }
+
     return trim(var_export($value, true), "'");
 }
 
