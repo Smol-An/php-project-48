@@ -23,6 +23,8 @@
             "src/Docopt.php",
             "src/Differ.php",
             "src/Parsers.php",
+            "src/Formatters.php",
+            "src/Formatters/stylish.php",
             "tests/DifferTest.php"
         ]
     },

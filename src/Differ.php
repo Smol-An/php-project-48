@@ -3,6 +3,7 @@
 namespace Differ\Differ;
 
 use function Differ\Parsers\parse;
+use function Differ\Formatters\getFormattedDiff;
 
 function findDifferences($data1, $data2, $depth = 0)
 {
@@ -35,53 +36,9 @@ function findDifferences($data1, $data2, $depth = 0)
     return $diff;
 }
 
-function getFormattedDiff($diff, $depth = 0)
-{
-    $indent = str_repeat(' ', $depth * 4);
-    $closeIndent = str_repeat(' ', $depth * 4 + 4);
-    $output = "";
-
-    foreach ($diff as $key => $value) {
-        if (is_array($value)) {
-            $output .= $indent . formatKey($key) . ": {\n";
-            $output .= getFormattedDiff($value, $depth + 1);
-            $output .= $closeIndent . "}\n";
-        } elseif ($value === '') {
-            $output .= $indent . formatKey($key) . ":" . "\n";
-        } else {
-            $output .= $indent . formatKey($key) . ": " . formatValue($value) . "\n";
-        }
-    }
-
-    return $output;
-}
-
-function formatKey($key)
-{
-    if (substr($key, 0, 4) === '  + ') {
-        return $key;
-    } elseif (substr($key, 0, 4) === '  - ') {
-        return $key;
-    } elseif (substr($key, 0, 4) === '    ') {
-        return $key;
-    }
-
-    return '    ' . $key;
-}
-
-function formatValue($value)
-{
-    if ($value === null) {
-        return 'null';
-    }
-
-    return trim(var_export($value, true), "'");
-}
-
-function genDiff($pathToFile1, $pathToFile2)
+function genDiff($pathToFile1, $pathToFile2, $formatName = 'stylish')
 {
     [$data1, $data2] = parse($pathToFile1, $pathToFile2);
     $diff = findDifferences($data1, $data2);
-    $output = "{\n" . getFormattedDiff($diff) . "}\n";
-    return $output;
+    return getFormattedDiff($diff, $formatName);
 }

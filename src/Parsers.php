@@ -6,26 +6,22 @@ use Symfony\Component\Yaml\Yaml;
 
 function parse($pathToFile1, $pathToFile2)
 {
-    $contents1 = $pathToFile1[0] === '/'
-                ? file_get_contents($pathToFile1)
-                : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile1);
-    $contents2 = $pathToFile2[0] === '/'
-                ? file_get_contents($pathToFile2)
-                : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile2);
+    $contents = function ($pathToFile) {
+        return $pathToFile[0] === '/'
+        ? file_get_contents($pathToFile)
+        : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile);
+    };
 
-    if (
-        (pathinfo($pathToFile1, PATHINFO_EXTENSION) === 'json')
-        && (pathinfo($pathToFile2, PATHINFO_EXTENSION) === 'json')
-    ) {
-        $data1 = json_decode($contents1, true);
-        $data2 = json_decode($contents2, true);
-    } elseif (
-        (pathinfo($pathToFile1, PATHINFO_EXTENSION) === 'yml')
-        && (pathinfo($pathToFile2, PATHINFO_EXTENSION) === 'yml')
-    ) {
-        $data1 = Yaml::parse($contents1);
-        $data2 = Yaml::parse($contents2);
-    }
+    $data = function ($pathToFile) use ($contents) {
+        if (pathinfo($pathToFile, PATHINFO_EXTENSION) === 'json') {
+            return json_decode($contents($pathToFile), true);
+        } elseif (pathinfo($pathToFile, PATHINFO_EXTENSION) === 'yml') {
+            return Yaml::parse($contents($pathToFile));
+        }
+    };
+
+    $data1 = $data($pathToFile1);
+    $data2 = $data($pathToFile2);
 
     return [$data1, $data2];
 }
