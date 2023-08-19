@@ -12,7 +12,10 @@ function findDifferences($data1, $data2, $depth = 0)
     sort($allKeys);
 
     foreach ($allKeys as $key) {
-        if (is_array($data1[$key]) && is_array($data2[$key])) {
+        if (
+            isset($data1[$key]) && isset($data2[$key])
+            && is_array($data1[$key]) && is_array($data2[$key])
+        ) {
             $nestedDiff = findDifferences($data1[$key], $data2[$key], $depth + 1);
             if (!empty($nestedDiff)) {
                 $diff['    ' . $key] = $nestedDiff;
