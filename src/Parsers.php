@@ -8,10 +8,10 @@ function parse($pathToFile1, $pathToFile2)
 {
     $contents1 = $pathToFile1[0] === '/'
                 ? file_get_contents($pathToFile1)
-                : file_get_contents(__DIR__ . '/' . $pathToFile1);
+                : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile1);
     $contents2 = $pathToFile2[0] === '/'
                 ? file_get_contents($pathToFile2)
-                : file_get_contents(__DIR__ . '/' . $pathToFile2);
+                : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile2);
 
     if (
         (pathinfo($pathToFile1, PATHINFO_EXTENSION) === 'json')
