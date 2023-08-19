@@ -7,8 +7,14 @@
 
 ### File comparison:
 
-#### json <> json 
+#### json <> json (plain structure) 
 [![asciicast](https://asciinema.org/a/LrXgCdAtDeyu81N4p1WFPsaw9.svg)](https://asciinema.rg/a/LrXgCdAtDeyu81N4p1WFPsaw9)
 
-#### yml <> yml
+#### yml <> yml (plain structure)
 [![asciicast](https://asciinema.org/a/mZ3gtlnA6TI7hTDzq6VeDGFaM.svg)](https://asciinema.org/a/mZ3gtlnA6TI7hTDzq6VeDGFaM)
+
+#### json <> json (nested structures)
+[![asciicast](https://asciinema.org/a/JM7DeaUNfycArIbmI0p7AaDHg.svg)](https://asciinema.org/a/JM7DeaUNfycArIbmI0p7AaDHg)
+
+#### yml <> yml (nested structures)
+[![asciicast](https://asciinema.org/a/YHqnWvdxHp9nja6ic7HPLGSru.svg)](https://asciinema.org/a/YHqnWvdxHp9nja6ic7HPLGSru)
