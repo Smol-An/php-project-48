@@ -4,43 +4,63 @@ namespace Differ\Formatters\Stylish;
 
 function getStylishDiff($diff, $depth = 0)
 {
-    $indent = str_repeat(' ', $depth * 4);
-    $closeIndent = str_repeat(' ', $depth * 4 + 4);
-    $output = "";
+    $indent = str_repeat(" ", $depth * 4);
+    $output = [];
 
-    foreach ($diff as $key => $value) {
-        if (is_array($value)) {
-            $output .= $indent . formatKey($key) . ": {\n";
-            $output .= getStylishDiff($value, $depth + 1);
-            $output .= $closeIndent . "}\n";
-        } elseif ($value === '') {
-            $output .= $indent . formatKey($key) . ":" . "\n";
-        } else {
-            $output .= $indent . formatKey($key) . ": " . formatValue($value) . "\n";
+    foreach ($diff as $key => $node) {
+        switch ($node['status']) {
+            case 'added':
+                $formattedValue = formatValue($node['value'], $depth + 1);
+                $formattedValue === ''
+                ? $output[] = "{$indent}  + {$key}:"
+                : $output[] = "{$indent}  + {$key}: {$formattedValue}";
+                break;
+            case 'removed':
+                $formattedValue = formatValue($node['value'], $depth + 1);
+                $formattedValue === ''
+                ? $output[] = "{$indent}  - {$key}:"
+                : $output[] = "{$indent}  - {$key}: {$formattedValue}";
+                break;
+            case 'updated':
+                $formattedOldValue = formatValue($node['oldValue'], $depth + 1);
+                $formattedNewValue = formatValue($node['newValue'], $depth + 1);
+                $formattedOldValue === ''
+                ? $output[] = "{$indent}  - {$key}:"
+                : $output[] = "{$indent}  - {$key}: {$formattedOldValue}";
+                $formattedNewValue === ''
+                ? $output[] = "{$indent}  + {$key}:"
+                : $output[] = "{$indent}  + {$key}: {$formattedNewValue}";
+                break;
+            case 'nested':
+                $output[] = "{$indent}    {$key}: {\n"
+                    . getStylishDiff($node['children'], $depth + 1)
+                    . "\n{$indent}    }";
+                break;
+            case 'unchanged':
+                $formattedValue = formatValue($node['value'], $depth + 1);
+                $formattedValue === ''
+                ? $output[] = "{$indent}    {$key}:"
+                : $output[] = "{$indent}    {$key}: {$formattedValue}";
+                break;
         }
     }
 
-    return $output;
+    return implode("\n", $output);
 }
 
-function formatKey($key)
+function formatValue($value, $depth)
 {
-    if (substr($key, 0, 4) === '  + ') {
-        return $key;
-    } elseif (substr($key, 0, 4) === '  - ') {
-        return $key;
-    } elseif (substr($key, 0, 4) === '    ') {
-        return $key;
-    }
+    if (is_array($value)) {
+        $formattedArray = array_map(function ($key, $val) use ($depth) {
+            $formattedValue = formatValue($val, $depth + 1);
+            $keyIndent = str_repeat(" ", $depth * 4);
+            return "{$keyIndent}    {$key}: {$formattedValue}";
+        }, array_keys($value), $value);
 
-    return '    ' . $key;
-}
-
-function formatValue($value)
-{
-    if ($value === null) {
+        return "{\n" . implode("\n", $formattedArray) . "\n" . str_repeat(" ", $depth * 4) . "}";
+    } elseif (is_null($value)) {
         return 'null';
+    } else {
+        return trim(var_export($value, true), "'");
     }
-
-    return trim(var_export($value, true), "'");
 }

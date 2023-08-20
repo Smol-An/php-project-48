@@ -13,6 +13,6 @@ function getFormattedDiff($diff, $formatName)
     } elseif ($formatName === 'json') {
         return getJsonDiff($diff);
     } else {
-        return "{\n" . getStylishDiff($diff) . "}\n";
+        return "{\n" . getStylishDiff($diff) . "\n}\n";
     }
 }
