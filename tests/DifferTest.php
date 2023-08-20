@@ -33,4 +33,15 @@ class DifferTest extends TestCase
             $this->getFixtureFullPath('file2.yml')
         ));
     }
+
+    public function testGenDiffPlain(): void
+    {
+        $expected = file_get_contents($this->getFixtureFullPath('plain.txt'));
+
+        $this->assertEquals($expected, genDiff(
+            $this->getFixtureFullPath('file1.json'),
+            $this->getFixtureFullPath('file2.json'),
+            'plain'
+        ));
+    }
 }

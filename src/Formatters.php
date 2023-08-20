@@ -9,7 +9,8 @@ use function Differ\Formatters\Json\getJsonDiff;
 function getFormattedDiff($diff, $formatName)
 {
     if ($formatName === 'plain') {
-        return getPlainDiff($diff);
+        $plainDiff = getPlainDiff($diff);
+        return implode("\n", $plainDiff) . "\n";
     } elseif ($formatName === 'json') {
         return getJsonDiff($diff);
     } else {
