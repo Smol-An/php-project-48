@@ -12,7 +12,8 @@ function getFormattedDiff($diff, $formatName)
         $plainDiff = getPlainDiff($diff);
         return implode("\n", $plainDiff) . "\n";
     } elseif ($formatName === 'json') {
-        return getJsonDiff($diff);
+        $jsonDiff = getJsonDiff($diff);
+        return json_encode($jsonDiff, JSON_PRETTY_PRINT) . "\n";
     } else {
         return "{\n" . getStylishDiff($diff) . "\n}\n";
     }
