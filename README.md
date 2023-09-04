@@ -14,7 +14,21 @@ Utility features:
  * Report generation in nested structure format, plain text and json.
 ```
 
-### File comparison:
+### Requirements
+
+* PHP >= 8.1
+* Composer >= 2.5.5
+* GNU Make >= 4.3
+
+### Setup
+
+```
+$ git clone https://github.com/Smol-An/php-project-48.git
+$ cd php-project-48
+$ make install
+```
+
+### File comparison presentation:
 
 #### json <> yml (nested format)
 [![asciicast](https://asciinema.org/a/SFWdv227iRunhdsBnOWWRReGp.svg)](https://asciinema.org/a/SFWdv227iRunhdsBnOWWRReGp)
