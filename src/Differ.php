@@ -5,7 +5,7 @@ namespace Differ\Differ;
 use function Differ\Parsers\parse;
 use function Differ\Formatters\getFormattedDiff;
 
-function findDiff($data1, $data2)
+function findDiff(array $data1, array $data2): array
 {
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     sort($keys);
@@ -32,9 +32,19 @@ function findDiff($data1, $data2)
     return $diff;
 }
 
-function genDiff($pathToFile1, $pathToFile2, $formatName = 'stylish')
+function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 'stylish'): string
 {
-    [$data1, $data2] = parse($pathToFile1, $pathToFile2);
+    $dataFile = function ($pathToFile) {
+        return $pathToFile[0] === '/'
+        ? file_get_contents($pathToFile)
+        : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile);
+    };
+
+    $formatFile = fn($pathToFile) => pathinfo($pathToFile, PATHINFO_EXTENSION);
+
+    $data1 = parse($dataFile($pathToFile1), $formatFile($pathToFile1));
+    $data2 = parse($dataFile($pathToFile2), $formatFile($pathToFile2));
+
     $diff = findDiff($data1, $data2);
     return getFormattedDiff($diff, $formatName);
 }

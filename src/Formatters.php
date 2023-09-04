@@ -6,15 +6,16 @@ use function Differ\Formatters\Stylish\getStylishDiff;
 use function Differ\Formatters\Plain\getPlainDiff;
 use function Differ\Formatters\Json\getJsonDiff;
 
-function getFormattedDiff($diff, $formatName)
+function getFormattedDiff(array $diff, string $formatName): string
 {
-    if ($formatName === 'plain') {
-        $plainDiff = getPlainDiff($diff);
-        return implode("\n", $plainDiff) . "\n";
-    } elseif ($formatName === 'json') {
-        $jsonDiff = getJsonDiff($diff);
-        return json_encode($jsonDiff, JSON_PRETTY_PRINT) . "\n";
-    } else {
-        return "{\n" . getStylishDiff($diff) . "\n}\n";
+    switch ($formatName) {
+        case 'plain':
+            return  getPlainDiff($diff);
+        case 'json':
+            return getJsonDiff($diff);
+        case 'stylish':
+            return getStylishDiff($diff);
+        default:
+            throw new \Exception("Unknown format: $formatName");
     }
 }
