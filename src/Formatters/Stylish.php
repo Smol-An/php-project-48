@@ -62,5 +62,5 @@ function formatValue($value, int $depth): string
 
 function getStylishDiff(array $diff): string
 {
-    return "{\n" . genStylishDiff($diff) . "\n}\n";
+    return "{\n" . genStylishDiff($diff) . "\n}";
 }

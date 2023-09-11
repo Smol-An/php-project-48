@@ -10,7 +10,7 @@ function getFormattedDiff(array $diff, string $formatName): string
 {
     switch ($formatName) {
         case 'plain':
-            return  getPlainDiff($diff);
+            return getPlainDiff($diff);
         case 'json':
             return getJsonDiff($diff);
         case 'stylish':

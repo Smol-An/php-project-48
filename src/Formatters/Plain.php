@@ -57,5 +57,5 @@ function formatValue($value)
 function getPlainDiff(array $diff): string
 {
     $plainDiff = genPlainDiff($diff);
-    return implode("\n", $plainDiff) . "\n";
+    return implode("\n", $plainDiff);
 }
