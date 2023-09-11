@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters\Plain;
 
-function formPlainDiff(array $diff, array $parentKeys = []): array
+function genPlainDiff(array $diff, array $parentKeys = []): array
 {
     $output = [];
 
@@ -25,7 +25,7 @@ function formPlainDiff(array $diff, array $parentKeys = []): array
                 $output[] = "Property '{$propertyPath}' was updated. From {$formattedOldValue} to {$formattedNewValue}";
                 break;
             case 'nested':
-                $output = array_merge($output, formPlainDiff($node['children'], $currentKeys));
+                $output = array_merge($output, genPlainDiff($node['children'], $currentKeys));
                 break;
         }
     }
@@ -48,7 +48,7 @@ function formatValue($value)
     }
 
     if (is_string($value)) {
-        return "'" . $value . "'";
+        return "'$value'";
     }
 
     return $value;
@@ -56,6 +56,6 @@ function formatValue($value)
 
 function getPlainDiff(array $diff): string
 {
-    $plainDiff = formPlainDiff($diff);
+    $plainDiff = genPlainDiff($diff);
     return implode("\n", $plainDiff) . "\n";
 }

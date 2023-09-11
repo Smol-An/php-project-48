@@ -11,6 +11,8 @@ function parse(string $dataFile, string $formatFile): array
             return json_decode($dataFile, true);
         case 'yml':
             return Yaml::parse($dataFile);
+        case 'yaml':
+            return Yaml::parse($dataFile);
         default:
             throw new \Exception("Unknown format: $format");
     }

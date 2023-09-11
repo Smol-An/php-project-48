@@ -2,7 +2,7 @@
 
 namespace Differ\Formatters\Stylish;
 
-function formStylishDiff(array $diff, int $depth = 0): string
+function genStylishDiff(array $diff, int $depth = 0): string
 {
     $indent = str_repeat(" ", $depth * 4);
     $output = [];
@@ -11,36 +11,26 @@ function formStylishDiff(array $diff, int $depth = 0): string
         switch ($node['status']) {
             case 'added':
                 $formattedValue = formatValue($node['value'], $depth + 1);
-                $formattedValue === ''
-                ? $output[] = "{$indent}  + {$key}:"
-                : $output[] = "{$indent}  + {$key}: {$formattedValue}";
+                $output[] = "{$indent}  + {$key}: {$formattedValue}";
                 break;
             case 'removed':
                 $formattedValue = formatValue($node['value'], $depth + 1);
-                $formattedValue === ''
-                ? $output[] = "{$indent}  - {$key}:"
-                : $output[] = "{$indent}  - {$key}: {$formattedValue}";
+                $output[] = "{$indent}  - {$key}: {$formattedValue}";
                 break;
             case 'updated':
                 $formattedOldValue = formatValue($node['oldValue'], $depth + 1);
                 $formattedNewValue = formatValue($node['newValue'], $depth + 1);
-                $formattedOldValue === ''
-                ? $output[] = "{$indent}  - {$key}:"
-                : $output[] = "{$indent}  - {$key}: {$formattedOldValue}";
-                $formattedNewValue === ''
-                ? $output[] = "{$indent}  + {$key}:"
-                : $output[] = "{$indent}  + {$key}: {$formattedNewValue}";
+                $output[] = "{$indent}  - {$key}: {$formattedOldValue}";
+                $output[] = "{$indent}  + {$key}: {$formattedNewValue}";
                 break;
             case 'nested':
                 $output[] = "{$indent}    {$key}: {\n"
-                    . formStylishDiff($node['children'], $depth + 1)
+                    . genStylishDiff($node['children'], $depth + 1)
                     . "\n{$indent}    }";
                 break;
             case 'unchanged':
                 $formattedValue = formatValue($node['value'], $depth + 1);
-                $formattedValue === ''
-                ? $output[] = "{$indent}    {$key}:"
-                : $output[] = "{$indent}    {$key}: {$formattedValue}";
+                $output[] = "{$indent}    {$key}: {$formattedValue}";
                 break;
         }
     }
@@ -72,5 +62,5 @@ function formatValue($value, int $depth): string
 
 function getStylishDiff(array $diff): string
 {
-    return "{\n" . formStylishDiff($diff) . "\n}\n";
+    return "{\n" . genStylishDiff($diff) . "\n}\n";
 }
