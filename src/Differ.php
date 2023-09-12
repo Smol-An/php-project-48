@@ -9,7 +9,7 @@ use function Differ\Formatters\getFormattedDiff;
 function findDiff(array $data1, array $data2): array
 {
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
-    $keys = sort($keys, fn($a, $b) => strcmp($a, $b), true);
+    $sortedKeys = sort($keys, fn($a, $b) => strcmp($a, $b), true);
 
     $diff = array_map(function ($key) use ($data1, $data2) {
         if (!array_key_exists($key, $data1)) {
@@ -39,9 +39,9 @@ function findDiff(array $data1, array $data2): array
                 'value' => $data1[$key]
             ];
         }
-    }, $keys);
+    }, $sortedKeys);
 
-    return array_combine($keys, $diff);
+    return array_combine($sortedKeys, $diff);
 }
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 'stylish'): string
