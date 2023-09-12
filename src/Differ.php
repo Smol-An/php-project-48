@@ -11,40 +11,37 @@ function findDiff(array $data1, array $data2): array
     $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $keys = sort($keys, fn($a, $b) => strcmp($a, $b), true);
 
-    return array_reduce($keys, function ($diff, $key) use ($data1, $data2) {
-        $entry = [];
-
+    $diff = array_map(function ($key) use ($data1, $data2) {
         if (!array_key_exists($key, $data1)) {
-            $entry = [
+            return [
                 'status' => 'added',
                 'value' => $data2[$key]
             ];
         } elseif (!array_key_exists($key, $data2)) {
-            $entry = [
+            return [
                 'status' => 'removed',
                 'value' => $data1[$key]
             ];
         } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
-            $entry = [
+            return [
                 'status' => 'nested',
                 'children' => findDiff($data1[$key], $data2[$key])
             ];
         } elseif ($data1[$key] !== $data2[$key]) {
-            $entry = [
+            return [
                 'status' => 'updated',
                 'oldValue' => $data1[$key],
                 'newValue' => $data2[$key],
             ];
         } else {
-            $entry = [
+            return [
                 'status' => 'unchanged',
                 'value' => $data1[$key]
             ];
         }
+    }, $keys);
 
-        $diff[$key] = $entry;
-        return $diff;
-    }, []);
+    return array_combine($keys, $diff);
 }
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 'stylish'): string
