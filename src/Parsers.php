@@ -14,6 +14,6 @@ function parse(string $dataFile, string $formatFile): array
         case 'yaml':
             return Yaml::parse($dataFile);
         default:
-            throw new \Exception("Unknown format: $format");
+            throw new \Exception("Unknown format: $formatFile");
     }
 }

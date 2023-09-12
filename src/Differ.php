@@ -12,34 +12,37 @@ function findDiff(array $data1, array $data2): array
     $keys = sort($keys, fn($a, $b) => strcmp($a, $b), true);
 
     return array_reduce($keys, function ($diff, $key) use ($data1, $data2) {
+        $entry = [];
+
         if (!array_key_exists($key, $data1)) {
-            $diff[$key] = [
+            $entry = [
                 'status' => 'added',
                 'value' => $data2[$key]
             ];
         } elseif (!array_key_exists($key, $data2)) {
-            $diff[$key] = [
+            $entry = [
                 'status' => 'removed',
                 'value' => $data1[$key]
             ];
         } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
-            $diff[$key] = [
+            $entry = [
                 'status' => 'nested',
                 'children' => findDiff($data1[$key], $data2[$key])
             ];
         } elseif ($data1[$key] !== $data2[$key]) {
-            $diff[$key] = [
+            $entry = [
                 'status' => 'updated',
                 'oldValue' => $data1[$key],
                 'newValue' => $data2[$key],
             ];
         } else {
-            $diff[$key] = [
+            $entry = [
                 'status' => 'unchanged',
                 'value' => $data1[$key]
             ];
         }
 
+        $diff[$key] = $entry;
         return $diff;
     }, []);
 }
@@ -47,9 +50,15 @@ function findDiff(array $data1, array $data2): array
 function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 'stylish'): string
 {
     $dataFile = function ($pathToFile) {
-        return $pathToFile[0] === '/'
+        $fileContent = $pathToFile[0] === '/'
         ? file_get_contents($pathToFile)
         : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile);
+
+        if ($fileContent === false) {
+            throw new \Exception("Failed to read file: $pathToFile");
+        }
+
+        return $fileContent;
     };
 
     $formatFile = fn($pathToFile) => pathinfo($pathToFile, PATHINFO_EXTENSION);

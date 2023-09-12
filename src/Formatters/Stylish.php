@@ -38,7 +38,7 @@ function genStylishDiff(array $diff, int $depth = 0): string
     return implode("\n", $output);
 }
 
-function formatValue($value, int $depth): string
+function formatValue(mixed $value, int $depth): string
 {
     if (is_array($value)) {
         $formattedArray = array_map(function ($key, $val) use ($depth) {

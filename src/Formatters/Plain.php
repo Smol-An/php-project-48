@@ -33,7 +33,7 @@ function genPlainDiff(array $diff, array $parentKeys = []): array
     return $output;
 }
 
-function formatValue($value)
+function formatValue(mixed $value)
 {
     if (is_array($value)) {
         return '[complex value]';
