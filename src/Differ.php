@@ -59,7 +59,7 @@ function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 
     return getFormattedDiff($diff, $formatName);
 }
 
-function getFileContents($pathToFile)
+function getFileContents(string $pathToFile)
 {
     $fileContents = $pathToFile[0] === '/'
     ? file_get_contents($pathToFile)
@@ -72,7 +72,7 @@ function getFileContents($pathToFile)
     return $fileContents;
 }
 
-function getFileFormat($pathToFile)
+function getFileFormat(string $pathToFile)
 {
     return pathinfo($pathToFile, PATHINFO_EXTENSION);
 }
