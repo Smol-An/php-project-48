@@ -46,23 +46,33 @@ function findDiff(array $data1, array $data2): array
 
 function genDiff(string $pathToFile1, string $pathToFile2, string $formatName = 'stylish'): string
 {
-    $dataFile = function ($pathToFile) {
-        $fileContent = $pathToFile[0] === '/'
-        ? file_get_contents($pathToFile)
-        : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile);
-
-        if ($fileContent === false) {
-            throw new \Exception("Failed to read file: $pathToFile");
-        }
-
-        return $fileContent;
-    };
-
-    $formatFile = fn($pathToFile) => pathinfo($pathToFile, PATHINFO_EXTENSION);
-
-    $data1 = parse($dataFile($pathToFile1), $formatFile($pathToFile1));
-    $data2 = parse($dataFile($pathToFile2), $formatFile($pathToFile2));
+    $data1 = parse(
+        getFileContents($pathToFile1),
+        getFileFormat($pathToFile1)
+    );
+    $data2 = parse(
+        getFileContents($pathToFile2),
+        getFileFormat($pathToFile2)
+    );
 
     $diff = findDiff($data1, $data2);
     return getFormattedDiff($diff, $formatName);
+}
+
+function getFileContents($pathToFile)
+{
+    $fileContents = $pathToFile[0] === '/'
+    ? file_get_contents($pathToFile)
+    : file_get_contents(__DIR__ . '/../tests/fixtures/' . $pathToFile);
+
+    if ($fileContents === false) {
+        throw new \Exception("Failed to read file: $pathToFile");
+    }
+
+    return $fileContents;
+}
+
+function getFileFormat($pathToFile)
+{
+    return pathinfo($pathToFile, PATHINFO_EXTENSION);
 }

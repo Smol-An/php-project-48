@@ -16,9 +16,9 @@ function genPlainDiff(array $diff, array $parentKeys = []): array
                 case 'removed':
                     return ["Property '{$propertyPath}' was removed"];
                 case 'updated':
-                    $formattedOldValue = formatValue($node['oldValue']);
-                    $formattedNewValue = formatValue($node['newValue']);
-                    return ["Property '{$propertyPath}' was updated. From {$formattedOldValue} to {$formattedNewValue}"];
+                    $formattedOldVal = formatValue($node['oldValue']);
+                    $formattedNewVal = formatValue($node['newValue']);
+                    return ["Property '{$propertyPath}' was updated. From {$formattedOldVal} to {$formattedNewVal}"];
                 case 'nested':
                     return genPlainDiff($node['children'], $currentKeys);
                 default:
