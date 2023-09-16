@@ -30,14 +30,15 @@ function genStylishDiff(array $diff, int $depth = 0): string
         }
     }, array_keys($diff), $diff);
 
-    return implode("\n", array_reduce($output, function ($carry, $item) {
+    $flattenedOutput = array_reduce($output, function ($carry, $item) {
         if (is_array($item)) {
             return array_merge($carry, $item);
         } else {
-            $carry[] = $item;
-            return $carry;
+            return array_merge($carry, [$item]);
         }
-    }, []));
+    }, []);
+
+    return implode("\n", $flattenedOutput);
 }
 
 function formatValue(mixed $value, int $depth): string

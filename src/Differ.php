@@ -72,7 +72,7 @@ function getFileContents(string $pathToFile)
     return $fileContents;
 }
 
-function getFileFormat($pathToFile)
+function getFileFormat(string $pathToFile)
 {
     return pathinfo($pathToFile, PATHINFO_EXTENSION);
 }
