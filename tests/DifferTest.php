@@ -16,7 +16,7 @@ class DifferTest extends TestCase
 
     public function testGenDiffJsonJson(): void
     {
-        $expected = file_get_contents($this->getFixtureFullPath('nested.txt'));
+        $expected = trim(file_get_contents($this->getFixtureFullPath('nested.txt')));
 
         $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath('file1.json'),
@@ -26,7 +26,7 @@ class DifferTest extends TestCase
 
     public function testGenDiffYmlYml(): void
     {
-        $expected = file_get_contents($this->getFixtureFullPath('nested.txt'));
+        $expected = trim(file_get_contents($this->getFixtureFullPath('nested.txt')));
 
         $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath('file1.yml'),
@@ -36,7 +36,7 @@ class DifferTest extends TestCase
 
     public function testGenDiffPlain(): void
     {
-        $expected = file_get_contents($this->getFixtureFullPath('plain.txt'));
+        $expected = trim(file_get_contents($this->getFixtureFullPath('plain.txt')));
 
         $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath('file1.json'),

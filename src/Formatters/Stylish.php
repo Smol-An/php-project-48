@@ -30,11 +30,11 @@ function genStylishDiff(array $diff, int $depth = 0): string
         }
     }, array_keys($diff), $diff);
 
-    $flattenedOutput = array_reduce($output, function ($carry, $item) {
+    $flattenedOutput = array_reduce($output, function ($acc, $item) {
         if (is_array($item)) {
-            return array_merge($carry, $item);
+            return array_merge($acc, $item);
         } else {
-            return array_merge($carry, [$item]);
+            return array_merge($acc, [$item]);
         }
     }, []);
 
