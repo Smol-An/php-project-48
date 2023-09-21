@@ -43,7 +43,11 @@ function formatValue(mixed $value): string
         return $value ? 'true' : 'false';
     }
 
-    return "'$value'";
+    if (is_string($value)) {
+        return "'$value'";
+    }
+
+    return $value;
 }
 
 function getPlainDiff(array $diff): string
