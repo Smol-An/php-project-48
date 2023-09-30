@@ -12,36 +12,39 @@ function buildDiff(array $data1, array $data2): array
     $sortedKeys = sort($keys, fn($a, $b) => strcmp($a, $b));
 
     $diff = array_map(function ($key) use ($data1, $data2) {
+        $value1 = $data1[$key] ?? null;
+        $value2 = $data2[$key] ?? null;
+
         if (!array_key_exists($key, $data1)) {
             return [
                 'key' => $key,
                 'status' => 'added',
-                'value' => $data2[$key]
+                'value' => $value2
             ];
         } elseif (!array_key_exists($key, $data2)) {
             return [
                 'key' => $key,
                 'status' => 'removed',
-                'value' => $data1[$key]
+                'value' => $value1
             ];
-        } elseif (is_array($data1[$key]) && is_array($data2[$key])) {
+        } elseif (is_array($value1) && is_array($value2)) {
             return [
                 'key' => $key,
                 'status' => 'nested',
-                'children' => buildDiff($data1[$key], $data2[$key])
+                'children' => buildDiff($value1, $value2)
             ];
-        } elseif ($data1[$key] !== $data2[$key]) {
+        } elseif ($value1 !== $value2) {
             return [
                 'key' => $key,
                 'status' => 'updated',
-                'oldValue' => $data1[$key],
-                'newValue' => $data2[$key],
+                'oldValue' => $value1,
+                'newValue' => $value2,
             ];
         } else {
             return [
                 'key' => $key,
                 'status' => 'unchanged',
-                'value' => $data1[$key]
+                'value' => $value1
             ];
         }
     }, $sortedKeys);

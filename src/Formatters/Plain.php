@@ -8,20 +8,25 @@ function buildPlainDiff(array $diff, array $parentKeys = []): array
 {
     return array_map(function ($node) use ($parentKeys) {
         $key = $node['key'];
+        $value = $node['value'] ?? null;
+        $oldValue = $node['oldValue'] ?? null;
+        $newValue = $node['newValue'] ?? null;
+        $children = $node['children'] ?? null;
+
         $currentKeys = [...$parentKeys, $key];
         $propertyPath = implode('.', $currentKeys);
 
         switch ($node['status']) {
             case 'added':
-                $formattedValue = formatValue($node['value']);
+                $formattedValue = formatValue($value);
                 return ["Property '$propertyPath' was added with value: $formattedValue"];
             case 'removed':
                 return ["Property '$propertyPath' was removed"];
             case 'nested':
-                return buildPlainDiff($node['children'], $currentKeys);
+                return buildPlainDiff($children, $currentKeys);
             case 'updated':
-                $formattedOldValue = formatValue($node['oldValue']);
-                $formattedNewValue = formatValue($node['newValue']);
+                $formattedOldValue = formatValue($oldValue);
+                $formattedNewValue = formatValue($newValue);
                 return ["Property '$propertyPath' was updated. From $formattedOldValue to $formattedNewValue"];
             case 'unchanged':
                 return [];
