@@ -14,34 +14,36 @@ class DifferTest extends TestCase
         return realpath(implode('/', $parts));
     }
 
-    public function testGenDiffJsonJson(): void
+    public function testGenDiffStylish(): void
     {
-        $expected = trim(file_get_contents($this->getFixtureFullPath('nested.txt')));
+        $expected = trim(file_get_contents($this->getFixtureFullPath('expectedStylish.txt')));
 
         $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath('file1.json'),
-            $this->getFixtureFullPath('file2.json')
-        ));
-    }
-
-    public function testGenDiffYmlYml(): void
-    {
-        $expected = trim(file_get_contents($this->getFixtureFullPath('nested.txt')));
-
-        $this->assertEquals($expected, genDiff(
-            $this->getFixtureFullPath('file1.yml'),
-            $this->getFixtureFullPath('file2.yml')
+            $this->getFixtureFullPath('file2.yml'),
+            'stylish'
         ));
     }
 
     public function testGenDiffPlain(): void
     {
-        $expected = trim(file_get_contents($this->getFixtureFullPath('plain.txt')));
+        $expected = trim(file_get_contents($this->getFixtureFullPath('expectedPlain.txt')));
 
         $this->assertEquals($expected, genDiff(
             $this->getFixtureFullPath('file1.json'),
-            $this->getFixtureFullPath('file2.json'),
+            $this->getFixtureFullPath('file2.yml'),
             'plain'
+        ));
+    }
+
+    public function testGenDiffJson(): void
+    {
+        $expected = trim(file_get_contents($this->getFixtureFullPath('expectedJson.txt')));
+
+        $this->assertEquals($expected, genDiff(
+            $this->getFixtureFullPath('file1.json'),
+            $this->getFixtureFullPath('file2.yml'),
+            'json'
         ));
     }
 }
