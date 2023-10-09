@@ -36,7 +36,7 @@ function buildPlainDiff(array $diff, array $parentKeys = []): array
 
 function formatValue(mixed $value): string
 {
-    if (is_array($value)) {
+    if (is_object($value)) {
         return '[complex value]';
     }
 

@@ -42,12 +42,13 @@ function getIndent(int $depth = 1, int $spacesCount = 4): string
 
 function formatValue(mixed $value, int $depth): string
 {
-    if (is_array($value)) {
+    if (is_object($value)) {
+        $valueArray = get_object_vars($value);
         $indent = getIndent($depth);
         $formattedArray = array_map(function ($key, $val) use ($depth, $indent) {
             $formattedValue = formatValue($val, $depth + 1);
             return "$indent    $key: $formattedValue";
-        }, array_keys($value), $value);
+        }, array_keys($valueArray), $valueArray);
 
         return "{\n" . implode("\n", $formattedArray) . "\n" . $indent . "}";
     }
