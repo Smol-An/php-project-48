@@ -6,31 +6,28 @@ use function Functional\sort;
 use function Differ\Parsers\parse;
 use function Differ\Formatters\getFormattedDiff;
 
-function buildDiff(object $data1, object $data2): array
+function buildDiff(array $data1, array $data2): array
 {
-    $data1Array = get_object_vars($data1);
-    $data2Array = get_object_vars($data2);
-
-    $keys = array_unique(array_merge(array_keys($data1Array), array_keys($data2Array)));
+    $keys = array_unique(array_merge(array_keys($data1), array_keys($data2)));
     $sortedKeys = sort($keys, fn($a, $b) => strcmp($a, $b));
 
-    $diff = array_map(function ($key) use ($data1Array, $data2Array) {
-        $value1 = $data1Array[$key] ?? null;
-        $value2 = $data2Array[$key] ?? null;
+    $diff = array_map(function ($key) use ($data1, $data2) {
+        $value1 = $data1[$key] ?? null;
+        $value2 = $data2[$key] ?? null;
 
-        if (!array_key_exists($key, $data1Array)) {
+        if (!array_key_exists($key, $data1)) {
             return [
                 'key' => $key,
                 'status' => 'added',
                 'value' => $value2
             ];
-        } elseif (!array_key_exists($key, $data2Array)) {
+        } elseif (!array_key_exists($key, $data2)) {
             return [
                 'key' => $key,
                 'status' => 'removed',
                 'value' => $value1
             ];
-        } elseif (is_object($value1) && is_object($value2)) {
+        } elseif (is_array($value1) && is_array($value2)) {
             return [
                 'key' => $key,
                 'status' => 'nested',

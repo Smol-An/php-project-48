@@ -28,7 +28,11 @@ Options:
 
 DOC;
 
-$args = Docopt::handle($doc, array('version'=>'Naval Fate 2.0'));
+$params = [
+  'version' => 'Gendiff 1.0'
+];
+
+$args = Docopt::handle($doc, $params);
 
 $pathToFile1 = $args['<firstFile>'];
 $pathToFile2 = $args['<secondFile>'];

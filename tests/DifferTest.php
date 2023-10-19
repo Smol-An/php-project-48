@@ -14,36 +14,56 @@ class DifferTest extends TestCase
         return realpath(implode('/', $parts));
     }
 
-    public function testGenDiffStylish(): void
+    /**
+    * @dataProvider provideFormatData
+    */
+    public function testGenDiffStylish($format): void
     {
-        $expected = trim(file_get_contents($this->getFixtureFullPath('expectedStylish.txt')));
-
-        $this->assertEquals($expected, genDiff(
-            $this->getFixtureFullPath('file1.json'),
-            $this->getFixtureFullPath('file2.yml'),
-            'stylish'
-        ));
+        $this->assertStringEqualsFile(
+            $this->getFixtureFullPath('expectedStylish.txt'),
+            genDiff(
+                $this->getFixtureFullPath("file1.$format"),
+                $this->getFixtureFullPath("file2.$format"),
+                'stylish'
+            )
+        );
     }
 
-    public function testGenDiffPlain(): void
+    /**
+    * @dataProvider provideFormatData
+    */
+    public function testGenDiffPlain($format): void
     {
-        $expected = trim(file_get_contents($this->getFixtureFullPath('expectedPlain.txt')));
-
-        $this->assertEquals($expected, genDiff(
-            $this->getFixtureFullPath('file1.json'),
-            $this->getFixtureFullPath('file2.yml'),
-            'plain'
-        ));
+        $this->assertStringEqualsFile(
+            $this->getFixtureFullPath('expectedPlain.txt'),
+            genDiff(
+                $this->getFixtureFullPath("file1.$format"),
+                $this->getFixtureFullPath("file2.$format"),
+                'plain'
+            )
+        );
     }
 
-    public function testGenDiffJson(): void
+    /**
+    * @dataProvider provideFormatData
+    */
+    public function testGenDiffJson($format): void
     {
-        $expected = trim(file_get_contents($this->getFixtureFullPath('expectedJson.txt')));
+        $this->assertStringEqualsFile(
+            $this->getFixtureFullPath('expectedJson.txt'),
+            genDiff(
+                $this->getFixtureFullPath("file1.$format"),
+                $this->getFixtureFullPath("file2.$format"),
+                'json'
+            )
+        );
+    }
 
-        $this->assertEquals($expected, genDiff(
-            $this->getFixtureFullPath('file1.json'),
-            $this->getFixtureFullPath('file2.yml'),
-            'json'
-        ));
+    public static function provideFormatData(): array
+    {
+        return [
+            ['json'],
+            ['yml']
+        ];
     }
 }

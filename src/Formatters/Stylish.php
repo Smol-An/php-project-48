@@ -42,13 +42,12 @@ function getIndent(int $depth = 1, int $spacesCount = 4): string
 
 function formatValue(mixed $value, int $depth): string
 {
-    if (is_object($value)) {
-        $valueArray = get_object_vars($value);
+    if (is_array($value)) {
         $indent = getIndent($depth);
         $formattedArray = array_map(function ($key, $val) use ($depth, $indent) {
             $formattedValue = formatValue($val, $depth + 1);
             return "$indent    $key: $formattedValue";
-        }, array_keys($valueArray), $valueArray);
+        }, array_keys($value), $value);
 
         return "{\n" . implode("\n", $formattedArray) . "\n" . $indent . "}";
     }
@@ -64,7 +63,7 @@ function formatValue(mixed $value, int $depth): string
     return trim($value, "'");
 }
 
-function getStylishDiff(array $diff): string
+function getDiff(array $diff): string
 {
     $stylishDiff = buildStylishDiff($diff);
     return "{\n" . $stylishDiff . "\n}";
