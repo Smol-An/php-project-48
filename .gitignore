@@ -4,3 +4,5 @@ logs
 *.swp
 *.cache
 build
+/.vscode/
+phpunit.xml.bak
